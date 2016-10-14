@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Brief Description: this is the xml schema for talent sys database. 
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:TalSys="http://www3.cs.stonybrook.edu/~sjavadi/Talent_Sys" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="JudgeList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="JID" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Show">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name" type="xs:string"/>
+				<xs:element name="Date" type="xs:int"/>
+				<xs:element ref="JudgeList"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:keyref name="NoInvalidJudgeForShows" refer="PrimaryKeyForJudges">
+			<xs:selector xpath="JudgeList/JID"/>
+			<xs:field xpath="JID"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="Shows">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Show" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="PrimaryKeyForShows">
+			<xs:selector xpath="Show"/>
+			<xs:field xpath="Name"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="Judge">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name" type="xs:string"/>
+				<xs:element name="JID" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Judges">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Judge" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="PrimaryKeyForJudges">
+			<xs:selector xpath="Judge"/>
+			<xs:field xpath="JID"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="Artwork">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name" type="xs:string"/>
+				<xs:element name="AWID" type="xs:string"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Artworks">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Artwork" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="PrimaryKeyForArtworks">
+			<xs:selector xpath="Artwork"/>
+			<xs:field xpath="AWID"/>
+		</xs:key>
+	</xs:element>
+	<xs:element name="JudgeScore">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="JID" type="xs:string"/>
+				<xs:element name="Score" type="xs:byte"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ScoreList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="JudgeScore" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Audition">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="ShowName" type="xs:string"/>
+				<xs:element name="AWID" type="xs:string"/>
+				<xs:element ref="ScoreList"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AuditionList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Audition" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Contestant">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Name" type="xs:string"/>
+				<xs:element name="ConID" type="xs:string"/>
+				<xs:element ref="AuditionList"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Contestants">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Contestant" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="PrimaryKeyForContestants">
+			<xs:selector xpath="Contestant"/>
+			<xs:field xpath="ConID"/>
+		</xs:key>
+		<xs:keyref name="NoInvalidShow" refer="PrimaryKeyForShows">
+			<xs:selector xpath="AuditionList/Audition"/>
+			<xs:field xpath="ShowName"/>
+		</xs:keyref>
+		<xs:keyref name="NoInvalidArtwork" refer="PrimaryKeyForArtworks">
+			<xs:selector xpath="AuditionList/Audition"/>
+			<xs:field xpath="AWID"/>
+		</xs:keyref>
+		<xs:keyref name="NoInvalidJudge" refer="PrimaryKeyForJudges">
+			<xs:selector xpath="AuditionList/Audition/ScoreList/JudgeScore"/>
+			<xs:field xpath="JID"/>
+		</xs:keyref>
+	</xs:element>
+	<xs:element name="Talent_Sys">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="Shows"/>
+				<xs:element ref="Judges"/>
+				<xs:element ref="Artworks"/>
+				<xs:element ref="Contestants"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

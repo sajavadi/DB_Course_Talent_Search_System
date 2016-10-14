@@ -1,0 +1,258 @@
+Detailed description of the database schema:
+
+Database schema is as follows:
+
+Show(ID, Date).
+	Key: ID.
+Judge(Name, ID).
+	Key: ID.
+Contestant(Name, ID).
+	Key: ID.
+ArtWork(Name, ID).
+	Key: ID.
+HasJudge(ShowID, JudgeID).
+	Key: ShowID, JudgeID.
+Audition(AuditionID, ShowID, ContestantID, ArtWorkID).
+	Key: AuditionID, ShowID, ContestantID, ArtWorkID.
+Score(AuditionID, JudgeID, Score).
+	Key: AuditionID, JudgeID.
+
+Here is some explanation about this schema:
+Firstly I define a separate predicate for each base  entity in a TSS namely Show, Judge, Contestant, ArtWork!
+Then, I defined the required predicates for showing the existing relationships between these entities:
+	- HasJudge relates a show to a judge.
+	- Audition relates a show to a contestant and an art work.
+	- Score is used to show that which score has been obtained by a contestant from a judge in the specified audition.
+*/
+
+/* Sample data based on the given test data */
+
+Show(Show1, 20140202).
+Show(Show2, 20140402).
+Show(Show3, 20140602).
+Show(Show4, 20140802).
+Show(Show5, 20141005).
+Judge(Judy, j1).
+Judge(Phil, j2).
+Judge(Lucy, j3).
+Judge(Irving, j4).
+Judge(Oscar, j5).
+HasJudge(Show1, j1).
+HasJudge(Show1, j3).
+HasJudge(Show1, j4).
+HasJudge(Show2, j1).
+HasJudge(Show2, j2).
+HasJudge(Show3, j4).
+HasJudge(Show3, j2).
+HasJudge(Show3, j5).
+HasJudge(Show4, j3).
+HasJudge(Show4, j5).
+HasJudge(Show5, j3).
+HasJudge(Show5, j4).
+HasJudge(Show5, j2).
+Contestant(Joe, c1).
+Contestant(Mary, c2).
+Contestant(Bess, c3).
+Contestant(Don, c4).
+Contestant(Bob, c5).
+Contestant(Ann, c6).
+Contestant(Tom, c7).
+ArtWork(Barcarolle, aw1).
+ArtWork(Giselle, aw2).
+ArtWork('Besame Mucho', aw3).
+ArtWork('Swan Lake', aw4).
+ArtWork(Habanera, aw5).
+ArtWork('The Tramp', aw6).
+Audition(A1, Show1, c1, aw1).
+Audition(A2, Show1, c2, aw1).
+Audition(A3, Show1, c2, aw2).
+Audition(A4, Show1, c3, aw3).
+Audition(A5, Show1, c4, aw3).
+Audition(A6, Show1, c4, aw4).
+Score(A1, j1, 7).
+Score(A1, j3, 8).
+Score(A1, j4, 6).
+Score(A2, j1, 5).
+Score(A2, j3, 6).
+Score(A2, j4, 6).
+Score(A3, j1, 9).
+Score(A3, j3, 6).
+Score(A3, j4, 8).
+Score(A4, j1, 4).
+Score(A4, j3, 5).
+Score(A4, j4, 6).
+Score(A5, j1, 9).
+Score(A5, j3, 9).
+Score(A5, j4, 7).
+Score(A6, j1, 7).
+Score(A6, j3, 7).
+Score(A6, j4, 10).
+Audition(A7, Show2, c5, aw4).
+Audition(A8, Show2, c2, aw5).
+Audition(A9, Show2, c2, aw3).
+Audition(A10, Show2, c6, aw5).
+Audition(A11, Show2, c3, aw2).
+Audition(A12, Show2, c7, aw3).
+Audition(A13, Show2, c7, aw6).
+Score(A7, j1, 8).
+Score(A7, j2, 6).
+Score(A8, j1, 3).
+Score(A8, j2, 5).
+Score(A9, j1, 9).
+Score(A9, j2, 10).
+Score(A10, j1, 7).
+Score(A10, j2, 6).
+Score(A11, j1, 8).
+Score(A11, j2, 7).
+Score(A12, j1, 5).
+Score(A12, j2, 5).
+Score(A13, j1, 7).
+Score(A13, j2, 6).
+Audition(A14, Show3, c5, aw6).
+Audition(A15, Show3, c6, aw3).
+Audition(A16, Show3, c3, aw4).
+Audition(A17, Show3, c7, aw1).
+Audition(A17+1, Show3, c4, aw2).
+Score(A14, j4, 8).
+Score(A14, j2, 7).
+Score(A14, j5, 9).
+Score(A15, j4, 7).
+Score(A15, j2, 6).
+Score(A15, j5, 4).
+Score(A16, j4, 6).
+Score(A16, j2, 8).
+Score(A16, j5, 7).
+Score(A17, j4, 9).
+Score(A17, j2, 7).
+Score(A17, j5, 6).
+Score(A17+1, j4, 8).
+Score(A17+1, j2, 6).
+Score(A17+1, j5, 9).
+Audition(A18, Show4, c1, aw6).
+Audition(A19, Show4, c5, aw1).
+Audition(A20, Show4, c6, aw3).
+Audition(A21, Show4, c7, aw6).
+Audition(A22, Show4, c7, aw1).
+Score(A18, j5, 7).
+Score(A18, j3, 6).
+Score(A19, j5, 6).
+Score(A19, j3, 8).
+Score(A20, j5, 9).
+Score(A20, j3, 8).
+Score(A21, j5, 8).
+Score(A21, j3, 10).
+Score(A22, j5, 5).
+Score(A22, j3, 5).
+Audition(A23, Show5, c5, aw4).
+Audition(A24, Show5, c5, aw2).
+Audition(A25, Show5, c2, aw1).
+Audition(A26, Show5, c2, aw3).
+Audition(A27, Show5, c6, aw3).
+Audition(A28, Show5, c3, aw3).
+Audition(A29, Show5, c3, aw5).
+Audition(A30, Show5, c7, aw6).
+Audition(A31, Show5, c4, aw6).
+Score(A23, j3, 3).
+Score(A23, j4, 5). 
+Score(A23, j2, 6).
+Score(A24, j3, 4).
+Score(A24, j4, 6). 
+Score(A24, j2, 8).
+Score(A25, j3, 5).
+Score(A25, j4, 7). 
+Score(A25, j2, 10).
+Score(A26, j3, 6).
+Score(A26, j4, 8). 
+Score(A26, j2, 7).
+Score(A27, j3, 7).
+Score(A27, j4, 9). 
+Score(A27, j2, 6).
+Score(A28, j3, 9).
+Score(A28, j4, 8). 
+Score(A28, j2, 8).
+Score(A29, j3, 8).
+Score(A29, j4, 7). 
+Score(A29, j2, 10).
+Score(A30, j3, 6).
+Score(A30, j4, 6). 
+Score(A30, j2, 8).
+Score(A31, j3, 5).
+Score(A31, j4, 8). 
+Score(A31, j2, 7).
+
+/* First query */
+
+?- Contestant(?c1,?_id1), Contestant(?c2, ?_id2),
+	Audition(?_a1, ?_show, ?_id1, ?_aw),  Audition(?_a2, ?_show, ?_id2, ?_aw),
+	exist(?_j, ?_s)^(Score(?_a1, ?_j, ?_s) , Score(?_a2, ?_j, ?_s)),
+	?_id1 @<  ?_id2.
+
+/* Second query! Firstly we define HaveEqualAvg predicate to use it  in the second step!
+HaveEqualAvg(?_id1,?_id2, ?_aw) means that contestants whose id are ?_id1 and ?_id2 
+have equal score  average for performing ?_aw art work! */
+
+HaveEqualAvg(?id1,?id2, ?aw):-  
+	avg{?s1[?a1]| Score(?a1, ?, ?s1), Audition(?a1, ?, ?id1,?aw)} =  
+	avg{?s2[?a2]| Score(?a2, ?, ?s2), Audition(?a2, ?, ?id2,?aw)}.
+
+?- Contestant (?c1, ?_id1), Contestant(?c2, ?_id2), 
+	Audition(?, ?, ?_id1, ?_aw), Audition(?, ?, ?_id2, ?_aw),
+	HaveEqualAvg(?_id1, ?_id2, ?_aw),
+	?_id1 @< ?_id2.
+
+/* Third query! Firstly we define GotEqualMaxScore! GotEqualMaxScore(?_sh1, ?_sh2,?_s1, ?_s2, ?_aw) means that
+score ?_s1 for art work ?_aw is the maximum score in show ?_sh1 and score ?_s1 for art work ?_w is the maximum
+score in show ?_sh2! 
+Also it checks ?_s1 and ?_s2 to be equal! */
+ 
+GotEqualMaxScore(?sh1, ?sh2,?s1, ?s2, ?aw):- 
+	?s1 = max{?s11[?sh1]|Audition(?a1, ?sh1, ?, ?aw ), Score(?a1, ?, ?s11)}, 
+	?s2 = max{?s22[?sh2]|Audition(?a2, ?sh2, ?, ?aw ), Score(?a2, ?, ?s22)}, 
+	?s1 = ?s2.
+	
+?- Contestant (?c1, ?_id1), Contestant(?c2, ?_id2),  
+	Audition(?_a1, ?_sh1, ?_id1, ?_aw), Audition(?_a2, ?_sh2, ?_id2, ?_aw), 
+	count{?_j1[?_sh1]|HasJudge(?_sh1, ?_j1)}>2,
+	count{?_j2[?_sh2]|HasJudge(?_sh2, ?_j2)}>2 , 
+	Score(?_a1, ?, ?_s1), 
+	Score(?_a2, ?, ?_s2),
+	GotEqualMaxScore(?_sh1, ?_sh2, ?_s1, ?_s2, ?_aw),
+	?_id1 @< ?_id2.
+
+/* Fourth query! Part A! DidNotPerformAllPieces(?id1, ?id2) means that contestant whose id is ?id1 
+did not perfrom some of the art works of the contestant whose id is ?id2  */
+ 
+DidNotPerformAllPieces(?id1, ?id2):-   
+	Audition(?, ?, ?id2, ?aw), 
+	\naf (Audition(?, ?, ?id1, ?aw)).
+
+?- Contestant(?c1, ?_id1), Contestant(?c2, ?_id2), 
+	\naf (DidNotPerformAllPieces(?_id1, ?_id2)), 
+	?_id1 != ?_id2.
+
+/* Fourth query! Part B! Using forall makes representing the previos query very easy */
+
+?- Contestant(?c1, ?_id1), Contestant(?c2, ?_id2) , 
+	forall(?_aw)^ ( Audition(?, ?, ?_id2,?_aw) ~~> Audition(?,?, ?_id1,?_aw) ), 
+	?_id1 != ?_id2.
+
+/* Fifth query! CoAuditioned(?id1, ?id2) means that contestants with ?id1 and ?id2 satisfy the definition 
+of CoAuditioned! It checks that these contestants have similar score from the same judge in the same show!
+After that, ChainedCoAuditions uses a recursive method to fins all pairs that satisfy the chained co-audition definition*/
+
+CoAuditioned(?id1, ?id2):-  
+	Contestant(?, ?id1), 
+	Contestant(?, ?id2),
+	Audition(?a1, ?sh, ?id1, ?aw),
+	Audition(?a2, ?sh, ?id2, ?aw),
+	exist(?j, ?s)^(Score(?a1, ?j, ?s) , Score(?a2, ?j, ?s)), 
+	?id1 @< ?id2.
+ChainedCoAuditions(?id1, ?id2):-
+	 CoAuditioned(?id1, ?id2).
+ChainedCoAuditions(?id1, ?id3):- 
+	ChainedCoAuditions(?id1, ?id2), 
+	CoAuditioned(?id2, ?id3).
+?- Contestant(?c1, ?_id1), Contestant(?c2, ?_id2), ChainedCoAuditions(?_id1, ?_id2).
+
+
+/*End of the file */
