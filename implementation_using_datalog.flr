@@ -181,11 +181,14 @@ Score(A31, j4, 8).
 Score(A31, j2, 7).
 
 /* First query */
+/* Find all pairs of contestants who happened to audition the same piece during the same show and got the same score from at least one judge. */
 
 ?- Contestant(?c1,?_id1), Contestant(?c2, ?_id2),
 	Audition(?_a1, ?_show, ?_id1, ?_aw),  Audition(?_a2, ?_show, ?_id2, ?_aw),
 	exist(?_j, ?_s)^(Score(?_a1, ?_j, ?_s) , Score(?_a2, ?_j, ?_s)),
 	?_id1 @<  ?_id2.
+
+/* Find all pairs of contestants who happened to audition the same piece (in possibly different shows) and got the same average score for that piece. */
 
 /* Second query! Firstly we define HaveEqualAvg predicate to use it  in the second step!
 HaveEqualAvg(?_id1,?_id2, ?_aw) means that contestants whose id are ?_id1 and ?_id2 
@@ -200,11 +203,14 @@ HaveEqualAvg(?id1,?id2, ?aw):-
 	HaveEqualAvg(?_id1, ?_id2, ?_aw),
 	?_id1 @< ?_id2.
 
+/* Find all pairs of contestants who auditioned the same piece in (possibly different) shows that had at least 3 judges and the two contestants got the same highest score. */
+
 /* Third query! Firstly we define GotEqualMaxScore! GotEqualMaxScore(?_sh1, ?_sh2,?_s1, ?_s2, ?_aw) means that
 score ?_s1 for art work ?_aw is the maximum score in show ?_sh1 and score ?_s1 for art work ?_w is the maximum
 score in show ?_sh2! 
 Also it checks ?_s1 and ?_s2 to be equal! */
  
+
 GotEqualMaxScore(?sh1, ?sh2,?s1, ?s2, ?aw):- 
 	?s1 = max{?s11[?sh1]|Audition(?a1, ?sh1, ?, ?aw ), Score(?a1, ?, ?s11)}, 
 	?s2 = max{?s22[?sh2]|Audition(?a2, ?sh2, ?, ?aw ), Score(?a2, ?, ?s22)}, 
@@ -218,6 +224,10 @@ GotEqualMaxScore(?sh1, ?sh2,?s1, ?s2, ?aw):-
 	Score(?_a2, ?, ?_s2),
 	GotEqualMaxScore(?_sh1, ?_sh2, ?_s1, ?_s2, ?_aw),
 	?_id1 @< ?_id2.
+
+/*
+Find all pairs of contestants such that the first contestants has performed all the pieces of the second contestant (possibly in different shows)
+*/
 
 /* Fourth query! Part A! DidNotPerformAllPieces(?id1, ?id2) means that contestant whose id is ?id1 
 did not perfrom some of the art works of the contestant whose id is ?id2  */
@@ -235,6 +245,11 @@ DidNotPerformAllPieces(?id1, ?id2):-
 ?- Contestant(?c1, ?_id1), Contestant(?c2, ?_id2) , 
 	forall(?_aw)^ ( Audition(?, ?, ?_id2,?_aw) ~~> Audition(?,?, ?_id1,?_aw) ), 
 	?_id1 != ?_id2.
+
+
+/*
+Find all chained co-auditions. A chained co-auditions is the transitive closure of the following binary relation: X and Y (directly) co-auditioned iff they both performed the same piece in the same show and got the same score from at least one (same) judge. Thus, a chained co-audition can be either a direct or an indirect co-audition.
+*/
 
 /* Fifth query! CoAuditioned(?id1, ?id2) means that contestants with ?id1 and ?id2 satisfy the definition 
 of CoAuditioned! It checks that these contestants have similar score from the same judge in the same show!
